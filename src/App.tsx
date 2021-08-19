@@ -6,11 +6,10 @@ import { Table } from "antd";
 import {ColumnsType} from "antd/lib/table/interface";
 
 interface columnType{
-  title: string,
-  width: number,
-  dataIndex: string,
-  key: string,
-  fixed: string,
+  key: number,
+  name: string,
+  age: number,
+  address: string,
 }
 const columns:ColumnsType<columnType> = [
   {
@@ -19,6 +18,47 @@ const columns:ColumnsType<columnType> = [
     dataIndex: 'name',
     key: 'name',
     fixed: 'left',
+    filters: [
+      {
+        text: 'Edward',
+        value: 'Edward',
+      },
+      {
+        text: 'Bran',
+        value: 'Bran',
+      },
+      {
+        text: 'Elizabet',
+        value: 'Elizabet',
+      },
+      {
+        text: 'Mister',
+        value: 'Mister',
+      },
+      {
+        text: 'Magnus',
+        value: 'Magnus',
+      },
+      {
+        text: 'Submenu',
+        value: 'Submenu',
+        children: [
+          {
+            text: 'Green',
+            value: 'Green',
+          },
+          {
+            text: 'Black',
+            value: 'Black',
+          },
+        ],
+      },
+    ],
+    // specify the condition of filtering result
+    // here is that finding the name started with `value`
+    onFilter: (value, record) => record.name.indexOf(value+"") === 0,
+    sorter: (a, b) => a.name.length - b.name.length,
+    sortDirections: ['descend'],
   },
   {
     title: 'Age',
@@ -26,25 +66,34 @@ const columns:ColumnsType<columnType> = [
     dataIndex: 'age',
     key: 'age',
     fixed: 'left',
+    sorter: (a, b) => a.age - b.age,
   },
   {
-    title: 'Column 1',
+    title: 'Address',
     dataIndex: 'address',
     key: '1',
-    width: 150,
+    width: 100,
+    onFilter: (value, record) => record.address.indexOf(value+"") === 0,
   },
 ];
 
-
-const data:any[]=[];
-for (let i = 0; i < 20; i++) {
+const firstName = ['Edward','Bran','Elizabet','Mister','Magnus']
+const lastName = ['Bowie','Kiss','Dow','Me','Li']
+const fi:string[]=[]
+for (let i = 0; i < firstName.length; i++) {
+  for(let j=0; j<lastName.length; j++)
+    fi.push(firstName[i]+" "+lastName[j])
+}
+const data:any[]=[]
+for (let i = 0; i < fi.length; i++) {
   data.push({
     key: i,
-    name: `Edward. ${i}`,
-    age: 32,
+    name: `${fi[i]}`,
+    age: 20+i,
     address: `London Park no. ${i}`,
   });
 }
+
 function App() {
   // @ts-ignore
   return (
